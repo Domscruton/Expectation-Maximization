@@ -9,6 +9,46 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Introduction
+
+## Problem Description
+
+The Expectation-Maximization is a semi-supervised cluster method used to categorize observations based on the characteristics of other observations whose cluster/ group is known. Hence, the method is semi-supervised, since one only knows which cluster an observation belongs to for a subset of observations, with the goal to use information from such obsrvations to inform the cluster for observations whose cluster is unknown. 
+
+For example, we can consider a case in the insurance industry
+
+## Expectation-Maximization Algorithm
+
+The Expectation-Maximization Algorithm consists of distributional assumptions regarding the clustering of the data, with each cluster typically considered to be (multivariate) normal. 
+
+### Pseudo-Code
+
+The pseudo-code for the general implementation of the Expectation-Maximization function is as follows:
+
+### R Code
+
+
+### Python Code
+
+
+## Use Cases
+
+### a) fisheries
+
+A common problem in fisheries and other ecological studies is using a subsample of animals to then categorize other animals. In particular, this could be used to set environmental policy on the size of fish that can be caught, in order to protect fish stocks.
+
+### b) Insurance Risk Pricing
+
+
+
+### c) Other Use Cases
+
+## Conclusion
+
+## References
+
+
+
 ## R Markdown
 
 This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
