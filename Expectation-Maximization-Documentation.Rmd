@@ -37,17 +37,32 @@ The pseudo-code for the general implementation of the Expectation-Maximization f
 
 A common problem in fisheries and other ecological studies is using a subsample of animals to then categorize other animals. In particular, this could be used to set environmental policy on the size of fish that can be caught, in order to protect fish stocks.
 
+In order to estimate how a fish population is developing over time, one can monitor the age structure of fish over time. In particular, fish can be classified as young, adult or old. One way to do this is to determine the age of each fish manually by growth layers on a small earbone called the otolith. However, this approach is time-consuming and costly.
+
+An alternative approach is to exploit the knowledge that the age of a fish and its length are correlated. Given this information, we can sample a smaller subset of fish, measure their length and then their age by counting the growth layers on the otolith and use an Expectation-Maximization Algorithm to identify the age group of the remaining fish based on their lenghth. This approach is far more time-efficient and economical than manually counting growth layers for all fish in the population.
+
+To identify the age groups of the remaining fish, we assume each fish is drawn from one of 3 distributions which represents their age: young, adult and old. Combiining these distributions results in a mixture model, in which there is some natural overlap between age groups. For example, young fish will have some longer fish than those in the adult group. Each of these mixtures has some expectation and standard deviation.
+
 ### b) Insurance Risk Pricing
 
-
+In this example, the EM-Algorithm is extended to multiple dimensions. In this case, we assume that each mixture is a multi-variate Gaussian Mixture. The appropriateness of this assumption is not considered here but is discussed in [], although the Gaussian is considered a good generic choice due to its spherical nature and the conclusions of the Central Limit Theorem.  
 
 ### c) Other Use Cases
 
+A variety of other use cases of the Expectation-Maximization exist in very different industries. Any problems that involve the clustering of observations when only some observations have known clusters can benefit from the use of this Algorithm. Such categorization for every single individual is either:
+
+a) Extremely time-consuming, or economically infeasible
+b) impossiblem, since data may only exist or be available for a subset of the population
+
 ## Conclusion
+
+In this report we have discussed and implemented the Expectation-Maximization Algorithm to solve problems where only a sample of the population has been categorized, and we would like to use the characteristics of those individuals (correlations with the cluster) to inform the clusters of the remaining observations. 
+
+We believe this method is something that is seriously under-utilised. In particular it can result in large business value, by making use of data that is only available for a subset of the population. We have seen the case of insurance, where the use of such an algorithm can be hugely beneficial for risk pricing, in that it can help to identify behavioural characteristics of the population that a standard Generalized or Additive Model would fail to consider. It also enables one to engineer new feature which have a clear interpretation, a particularly important concept in insurance, where rate changes to such a variable by pricing analysts must have a logical structure.
 
 ## References
 
-
+Chuong Do, Serafim Batzoglu (2008). 'What is the Expectation Maximization Algorithm?'. Nature Biotechnology, Vol 6, No. 8, pp 897-899.
 
 ## R Markdown
 
