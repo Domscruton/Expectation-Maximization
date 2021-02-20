@@ -67,7 +67,13 @@ In this step, the best estimates of the mean and variance are updated, given the
 
 $$\hat{\mu}_k = \frac{\sum_{i = 1}^N P(x_i \in k | x_i)x_i}{\sum_{i = 1}^{N}P(x_i \in k | x_i)}$$
 
-Note that this is a weighted mean, with 
+Note that this is a weighted mean, with the weights corresponding to the probability of an observation belonging to each class for each observation. The new estimate of $\sigma_k$ is based on $\hat{\mu}_k$:
+
+$$\hat{\sigma}_k = \sqrt{\frac{\sum_{i = 1}^N P(x_i \in k | x_i)(x_i - \hat{\mu}_k)^2}{\sum_{i = 1}^N P(x_i \in k |x_i)}$$
+
+Finally, 
+
+$$\hat{\lambda_k} = \frac{1}{N}\sum_{i = 1}^N P(x_i \in k | x_i)$$
 
 ### Convergence Check
 
