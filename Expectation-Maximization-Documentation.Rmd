@@ -53,7 +53,13 @@ In multiple dimensions, we have the following:
 
 ### Expectation Step
 
-The expectation step quantifies the chance an observation belongs to each group. We do this by calculating the probability that 
+The expectation step quantifies the chance an observation belongs to each group. We do this by calculating the probability that $\textbf{x}_i$ belongs to group k using Bayes Rule:
+
+$$P(x_i \in  k | x_i) = \frac{P(x_i | x_i \in k)P(k)}{P(x_i)}$$
+This posterior probability that observation $i$ belongs to group $k$ is computed for each observation $x_i$ based on our current best estimate of the mean and variance parameters. $P(x_i | x_i \in k)$ is given by the (Gaussian Multivariate) density function with mean $\mu_k$ and variance $\sigma_k^2$. $P(x_i)$ is the total probability, summed over all groups, found using the Partition Theorem:
+
+$$P(x_i) = \sum_{k = 1}^K P(x_i|x_i \in k) P(k)$$
+
 
 ### Maximization Step
 
