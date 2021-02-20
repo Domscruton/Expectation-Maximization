@@ -23,6 +23,13 @@ The Expectation-Maximization Algorithm is particularly useful for identifying an
 
 ## Mixture Models
 
+A _Gaussian Mixture Model_ (GMM) is a probabilistic model that assumes that the instances were generated from a mixture of several Gaussian distributions whose parameters are unknown. All the instances from a single Gaussian distribution form a cluster that typically looks like an ellipsoid. Each cluster can have a different ellipsoidal shape, size, density and orientationm (since the mean and standard deviation parameters for each mixture are themselves vectors). 
+
+
+Bayesian Gaussian Mixture Models
+
+
+
 # Expectation-Maximization Algorithm
 
 The Expectation-Maximization Algorithm consists of distributional assumptions regarding the clustering of the data, with each cluster typically considered to be (multivariate) normal. To solve this problem, we assign values of each explanatory variable to each cluster, estimate the mean and standard deviation for these groups and then iteratively consider whether to change the grouping or not. 
@@ -149,9 +156,15 @@ We believe this method is something that is seriously under-utilised. In particu
 
 The algorithm is particularly useful in identifying unobserved variables and hidden processes.
 
+In real life, it is likely that a lot of the data might be uncorrelated with each factor level of categorization, and the data is also unlikely to be normally distributed.
+
 # References
 
 Chuong Do, Serafim Batzoglu (2008). 'What is the Expectation Maximization Algorithm?'. Nature Biotechnology, Vol 6, No. 8, pp 897-899.
+
+Aurelien Geron (2019). 'Hands-On Machine Learning with Sikit-Learn, Keras & Tensorflow'. O'Reilly.
+
+Berlingerio, M., Bonchi, F., Gartner, T., Hurley, N., Ifrom, G. (2018). ‘Machine Learning and Knowledge Discovery in Databases’, European Conference, Dublin, Ireland, September 10-14, Proceedings, Part 2. pp379-381.
 
 # Appendix
 
