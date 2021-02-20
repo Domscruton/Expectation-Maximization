@@ -53,6 +53,7 @@ In multiple dimensions, we have the following:
 
 ### Expectation Step
 
+The expectation step quantifies the chance an observation belongs to each group. We do this by calculating the probability that 
 
 ### Maximization Step
 
@@ -98,6 +99,12 @@ A variety of other use cases of the Expectation-Maximization exist in very diffe
 
 a) Extremely time-consuming, or economically infeasible
 b) impossiblem, since data may only exist or be available for a subset of the population
+
+## Advantages and disadvantages of the Expectation-Maximization Algorithm
+
+- We need (at least some of) the $\textbf{x}$ variables to be sufficiently correlated with the groups, $y$. The higher the level of correlation, the more accurate the algorithm will be in classifying observations into the different groups
+- If there isn't much correlation between groups, there will be little independent variation in the cluster centroids and there will be a large number of misclassified observations
+- One could also use PCA to cluster observations and then identify the loss ratios within each cluster. 
 
 # Conclusion
 
