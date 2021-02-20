@@ -77,7 +77,19 @@ $$\hat{\lambda_k} = \frac{1}{N}\sum_{i = 1}^N P(x_i \in k | x_i)$$
 
 ### Convergence Check
 
+There are a number of ways to check whether we have converged to the optimal grouping and parameter estimates. One such method is to compute the _log-likelihood_ at each iteration and determine if it has changed by a large enough amount to imply the algorithm has not converged. Once we have converged, the log-likelihood will have only changed by a small amount.
 
+The likelihood of our data given these new values of $\hat{\lambda}}$, $\hat{\mu}$ and $\hat{\sigma}$ is:
+
+$$\ell(\mu, \lambda, \sigma | \textbf{X}) = \prod_{i = 1}^N \sum_{k = 1}^K \lambda_k \phi(x_i|\mu_k, \sigma_k^2)$$
+
+The log-likelihood is the logarithm of this quantity. We must be careful how we choose to compute this- problems with convergence since the log of a negligible number is strongly negative.
+
+Convergence is reached when:
+
+$$ln(\ell^{i + 1}) - ln(\ell^i) < \epsilon$$
+
+where $ln(\ell^i)$ is the log-likelihood from the $i^{th}$ iteration from the EM-Algorithm and $\epsilon$ is a desired tolerance. 
 
 # R Code
 
