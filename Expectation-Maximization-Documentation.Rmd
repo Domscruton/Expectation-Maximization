@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Problem Description
 
-The Expectation-Maximization is a semi-supervised cluster method used to categorize observations based on the characteristics of other observations whose cluster/ group is known. Hence, the method is semi-supervised, since one only knows which cluster an observation belongs to for a subset of observations, with the goal to use information from such obsrvations to inform the cluster for observations whose cluster is unknown. 
+The Expectation-Maximization is a semi-supervised cluster method used to categorize observations based on the characteristics of other observations whose cluster/ group is known. Hence, the method is semi-supervised, since one only knows which cluster an observation belongs to for a subset of observations, with the goal to use information from such obsrvations to inform the cluster for observations whose cluster is unknown.
 
 For example, we can consider a case in the insurance industry
 
@@ -29,7 +29,6 @@ The Expectation-Maximization Algorithm consists of distributional assumptions re
 
 The model depends on some unobserved latent variable.
 
-
 ## Pseudo-Code
 
 The EM-Algorithm consists of assigning an initial grouping, followed by iteration between an expectation and maximization step, with a test for convergence determining when iteration can stop.  
@@ -43,12 +42,39 @@ The pseudo-code for the general implementation of the Expectation-Maximization f
   
 ### Initialize
 
+Suppose we have target category $\textbf{y}$, which for a proportion of observations, $p$, is known and for the other $N (1 - p)$ observations is unknown, where $N$ is the total number of observations. Each observation has an associated set of other variables, $\textbf{x}$. For example, $y$ could be the age group of the identified fish and $x$ could be the length of each fish. 
+
+1) Using data from the observations of known category, assign labels (categories) to each of the $N (1 - p)$ observations in the dataset that have unknown $y$.
+2) Given these intial assignments, compute initial values of $\hat{\mu_k}$ and $\hat{\sigma}_k$ for each cluster, $k = 1,...K$
+3) Compute Initial Values of $\hat{\lambda}_k$
+
+In multiple dimensions, we have the following:
+
+
+### Expectation Step
+
+
+### Maximization Step
+
+
+### Convergence Check
+
+
+
 # R Code
 
 
+## One-Dimensional Fisheries Application
+
+## Multi-Dimensional Insurance Application
+
 # Python Code
 
+## One-Dimensional Fisheries Application
+
 For the sake of a good programming exercise, the Expectation-Maximization Algorithm implemented in R was also coded in Python.
+
+## Multi-Dimensional Insurance Application
 
 # Use Cases
 
