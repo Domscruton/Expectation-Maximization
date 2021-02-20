@@ -118,6 +118,8 @@ An alternative approach is to exploit the knowledge that the age of a fish and i
 
 To identify the age groups of the remaining fish, we assume each fish is drawn from one of 3 distributions which represents their age: young, adult and old. Combiining these distributions results in a mixture model, in which there is some natural overlap between age groups. For example, young fish will have some longer fish than those in the adult group. Each of these mixtures has some expectation and standard deviation.
 
+The empirical distribution function indicates three clear 'peaks', each corresponding to the 3 Gaussian mixtures for fish ages 'young', 'adult' and 'old. Figure ? also shows a Normal Quantile-Quantile (QQ) plot of fish lengths. Whilst this plot clearly shows deviation from the assumption from normality, the three subfigures identify three separate Gaussian Mixtures. Therefore, we make the reasonable assumption that fish lengths come from a tri-modal Gaussian Mixture. A Gaussian Mixture Model (GMM) "assumes all data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters".
+
 ## b) Insurance Risk Pricing
 
 In this example, the EM-Algorithm is extended to multiple dimensions. In this case, we assume that each mixture is a multi-variate Gaussian Mixture. The appropriateness of this assumption is not considered here but is discussed in [], although the Gaussian is considered a good generic choice due to its spherical nature and the conclusions of the Central Limit Theorem.  
