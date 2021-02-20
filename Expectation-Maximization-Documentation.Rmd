@@ -63,6 +63,11 @@ $$P(x_i) = \sum_{k = 1}^K P(x_i|x_i \in k) P(k)$$
 
 ### Maximization Step
 
+In this step, the best estimates of the mean and variance are updated, given the current grouping. Given the probabilities of membership estimated above, we compute another iteration of the estimate $\hat{\mu}_k$ as:
+
+$$\hat{\mu}_k = \frac{\sum_{i = 1}^N P(x_i \in k | x_i)x_i}{\sum_{i = 1}^{N}P(x_i \in k | x_i)}$$
+
+Note that this is a weighted mean, with 
 
 ### Convergence Check
 
@@ -85,7 +90,7 @@ For the sake of a good programming exercise, the Expectation-Maximization Algori
 
 # Use Cases
 
-## a) fisheries
+## a) Fisheries
 
 A common problem in fisheries and other ecological studies is using a subsample of animals to then categorize other animals. In particular, this could be used to set environmental policy on the size of fish that can be caught, in order to protect fish stocks.
 
@@ -99,6 +104,8 @@ To identify the age groups of the remaining fish, we assume each fish is drawn f
 
 In this example, the EM-Algorithm is extended to multiple dimensions. In this case, we assume that each mixture is a multi-variate Gaussian Mixture. The appropriateness of this assumption is not considered here but is discussed in [], although the Gaussian is considered a good generic choice due to its spherical nature and the conclusions of the Central Limit Theorem.  
 
+For this example, rather than use real-world data, we simulate data for which we know the true category for all observations. We then sample 10% of the observations, which we consider to be the known categories and for the remaining 90% of observations, we add some random variation (might not be necessary) and assess how well the algorithm performs in recovering the categories for each group.
+
 ## c) Other Use Cases
 
 A variety of other use cases of the Expectation-Maximization exist in very different industries. Any problems that involve the clustering of observations when only some observations have known clusters can benefit from the use of this Algorithm. Such categorization for every single individual is either:
@@ -111,6 +118,8 @@ b) impossiblem, since data may only exist or be available for a subset of the po
 - We need (at least some of) the $\textbf{x}$ variables to be sufficiently correlated with the groups, $y$. The higher the level of correlation, the more accurate the algorithm will be in classifying observations into the different groups
 - If there isn't much correlation between groups, there will be little independent variation in the cluster centroids and there will be a large number of misclassified observations
 - One could also use PCA to cluster observations and then identify the loss ratios within each cluster. 
+
+Insurance pricing is certainly an interesting case. Most variables are used to aggregate policyholders, and assume all policyholders in a group behave the same way. This might make sense when predicting claim severity (for example, we might expect those with more occupants or those with higher contents value to make larger claims, on average), however for claim frequency it can be dubious. In fact, the vast majority of information used in insurance pricing is basedon correlation rather than causation, and can result in overcharging and undercharging many individuals within a given group. Behavioural data is thus particularly important in the prediction of claim frequency and allows for greater explanatory power. For example, a policyholder with a google search history of how to to become a benefits cheat is far more likely to make a Contents Home Insurance claim.
 
 # Conclusion
 
