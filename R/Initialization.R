@@ -3,14 +3,27 @@
 
 # Random Assignment -------------------------------------------------------
 
-random_initialization <- function(X, target, K){
+random_initialization <- function(X, target, K, clusters){
   # Inputs:
     # x: dataframe containing features
     # y: character string identify the column
-  
+    # K: no. clusters
+    # clusters: cluster values to impute
+  # calculate a vector of probability weights
+  # for the elements that are NA, we want to sample- remember that we want to
+  # keep the target values for those that already exist.
+  for (i in which(is.na(target))) {
+    target[i] <- sample(clusters, 1)
+    print(target[i])
+  }
+  return(target)
 }
 
 # K-Means Assignment ------------------------------------------------------
+
+
+# Multinomial Assignment --------------------------------------------------
+
 
 
 # Initialization Function -------------------------------------------------
