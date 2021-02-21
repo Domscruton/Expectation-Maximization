@@ -21,7 +21,7 @@ random_initialization <- function(X, target, K, clusters, p){
 
 # K-Means Assignment ------------------------------------------------------
 
-KMeans_initialization <- function(X, target, K, clusters){
+KMeans_initialization <- function(X, target, clusters){
   
   # Use centroids for known observations to perform K-Means Clustering
   
@@ -39,11 +39,16 @@ KMeans_initialization <- function(X, target, K, clusters){
   }
   # Apply K-Means using calculated centroids and return a vecotr of cluster labels
   target <- kmeans(X, centers = centroids)[1]
+  return(target)
 }
 
 # Multinomial Assignment --------------------------------------------------
 
 Multinomial_initialization <- function(X, target, clusters){
+  
+  # Fit multinomial model for known data
+  
+  # Use fitted model to predict clusters for unknown observations
   
 }
 
@@ -72,7 +77,7 @@ initialization_fun <- function(method = "K-Means", target, X){
   if (method == "Random"){
     target <- random_initialization(X, target, K, clusters, p)
   }else if (method == "K-Means") {
-    target <- KMeans_initialization()
+    target <- KMeans_initialization(X, target, clusters)
   }else if (method == "Multinomial") {
     target <- Multinomial_initialization()
   }else{
