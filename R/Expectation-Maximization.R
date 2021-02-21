@@ -14,3 +14,17 @@ for (i in files){
   infile <- paste("R/", i, ".R", sep = "")
   source(infile)
 }
+
+EM_Algorithm <- function(df, y, col.rm = NULL, epochs = 1000, method = "K-Means"){
+  
+  # Extract target and design matrix
+  target <- df[, y]
+  X <- df[, setdiff(names(df), c(col.rm, y))]
+  # Inputs:
+    # df: dataframe
+    # y: character string containing cluster column
+    # col.rm: character string/vector of stings containing any columns to be removed 
+            # from the dataset
+    # epochs: Number of training iterations
+    # Method: Method to use for initialization
+}
