@@ -17,7 +17,8 @@ for (i in files){
 
 EM_Algorithm <- function(df, y, col.rm = NULL, epochs = 1000, method = "K-Means"){
   
-  # Extract target and design matrix
+  # Extract target, design matrix and proportion of pre-classified observations in 
+  # each cluster
   target <- df[, y]
   X <- df[, setdiff(names(df), c(col.rm, y))]
   # Inputs:
@@ -27,4 +28,8 @@ EM_Algorithm <- function(df, y, col.rm = NULL, epochs = 1000, method = "K-Means"
             # from the dataset
     # epochs: Number of training iterations
     # Method: Method to use for initialization
+  target_iter <- initialization_fun(method, target, X)
+  
+  # Return a list, containing the estimated parameters, predicted classes and number
+  # of iterations
 }

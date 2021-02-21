@@ -64,6 +64,12 @@ Suppose we have target category $\textbf{y}$, which for a proportion of observat
 
 In multiple dimensions, we have the following:
 
+There are several ways one could initialize model parameters. Random assignment is a simple approach that randomly assigns a cluster to each observation with a priori unknown cluster. A problem with this approach is that we expect to assign clusters in equal proportion to the observations with known cluster. However, a better alternative is to assign observations using a standard cluster method, for example K-Means. This method is non-parametric in that it does NOT assume a distribution for fish lengths. We can use pre-existing packages to carry out this step for initialization of model parameters. The default initialization is therefore set to use the K-Means cluster algorithm.
+
+Other initialization methods include fitting supervised classification models for the observations with iknown cluster group and using such models to predict the cluster group for the remaining observations. A variety of models could be used, with a simpler multinomial model perhaps more time-effective for initialization. The bene
+
+We compare the performance of different assignments. This step is arguably the most crucial in ensuring good performance of the EM-Algorithm.
+
 
 ### Expectation Step
 
