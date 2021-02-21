@@ -23,6 +23,22 @@ random_initialization <- function(X, target, K, clusters, p){
 
 KMeans_initialization <- function(X, target, K, clusters){
   
+  # Use centroids for known observations to perform K-Means Clustering
+  
+  # Convert X to dataframe to allow generalization 
+  X <- as.data.frame(X)
+  # calculate vector of means for each cluster (for other latent variables) to use
+  # as centroids for each cluster
+  centroids <- c()
+  for (i in clusters) {
+    if (dim(X)[2] == 1) {
+      centroids[i] <- mean(X[which(target == i), ])
+    }else{
+      centroids[i] <- colMeans(X[which(target == i), ])
+    }
+  }
+  # Apply K-Means using calculated centroids and return a vecotr of cluster labels
+  target <- kmeans(X, centers = centroids)[1]
 }
 
 # Multinomial Assignment --------------------------------------------------
