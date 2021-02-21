@@ -25,6 +25,13 @@ The Expectation-Maximization Algorithm is particularly useful for identifying an
 
 A _Gaussian Mixture Model_ (GMM) is a probabilistic model that assumes that the instances were generated from a mixture of several Gaussian distributions whose parameters are unknown. All the instances from a single Gaussian distribution form a cluster that typically looks like an ellipsoid. Each cluster can have a different ellipsoidal shape, size, density and orientationm (since the mean and standard deviation parameters for each mixture are themselves vectors). 
 
+Let $X_i$ represent the variables for observation $i$ and let $G_i$ by the cluster $i$ is in. We assume $X_i$ is normally distributed with mean $\textbf{\mu_k}$ and variance $\textbf{\sigma_k^2}$ when $G_i = k$. We also let $\lambda_k$ be the probability that the observation is in group $k$.
+
+The (multivariate) probability density function for $X_i$ is then given by:
+
+$$f(x) = \sum_{k = 1}^K \lambda_k \phi(x|\mu_k, \sigma_k^2)$$
+
+where $\phi(.| \mu_k, \sigma_k^2)$ is a normal probability density function with mean $\mu_k$ and variance $\sigma_k^2$. Not that the above formulation could be applied to any parametrized distribution. The aim is thus to identify the parameters $\lambda_k$, $\mu_k$ and $\sigma_k^2$ for every group, k. These estimates are then used to categorize the remaining observations with no prior cluster assignment. Note that we must specify the number of groups a priori. 
 
 Bayesian Gaussian Mixture Models
 
@@ -52,7 +59,7 @@ The pseudo-code for the general implementation of the Expectation-Maximization f
 Suppose we have target category $\textbf{y}$, which for a proportion of observations, $p$, is known and for the other $N (1 - p)$ observations is unknown, where $N$ is the total number of observations. Each observation has an associated set of other variables, $\textbf{x}$. For example, $y$ could be the age group of the identified fish and $x$ could be the length of each fish. 
 
 1) Using data from the observations of known category, assign labels (categories) to each of the $N (1 - p)$ observations in the dataset that have unknown $y$.
-2) Given these intial assignments, compute initial values of $\hat{\mu_k}$ and $\hat{\sigma}_k$ for each cluster, $k = 1,...K$
+2) Given these initial assignments, compute initial values of $\hat{\mu_k}$ and $\hat{\sigma}_k$ for each cluster, $k = 1,...K$
 3) Compute Initial Values of $\hat{\lambda}_k$
 
 In multiple dimensions, we have the following:
@@ -117,15 +124,15 @@ For the sake of a good programming exercise, the Expectation-Maximization Algori
 
 ## a) Fisheries
 
-A common problem in fisheries and other ecological studies is using a subsample of animals to then categorize other animals. In particular, this could be used to set environmental policy on the size of fish that can be caught, in order to protect fish stocks.
+A common problem in fisheries and other ecological studies is using a sub-sample of animals to then categorize other animals. In particular, this could be used to set environmental policy on the size of fish that can be caught, in order to protect fish stocks.
 
 In order to estimate how a fish population is developing over time, one can monitor the age structure of fish over time. In particular, fish can be classified as young, adult or old. One way to do this is to determine the age of each fish manually by growth layers on a small earbone called the otolith. However, this approach is time-consuming and costly.
 
-An alternative approach is to exploit the knowledge that the age of a fish and its length are correlated. Given this information, we can sample a smaller subset of fish, measure their length and then their age by counting the growth layers on the otolith and use an Expectation-Maximization Algorithm to identify the age group of the remaining fish based on their lenghth. This approach is far more time-efficient and economical than manually counting growth layers for all fish in the population.
+An alternative approach is to exploit the knowledge that the age of a fish and its length are correlated. Given this information, we can sample a smaller subset of fish, measure their length and then their age by counting the growth layers on the otolith and use an Expectation-Maximization Algorithm to identify the age group of the remaining fish based on their length. This approach is far more time-efficient and economical than manually counting growth layers for all fish in the population.
 
-To identify the age groups of the remaining fish, we assume each fish is drawn from one of 3 distributions which represents their age: young, adult and old. Combiining these distributions results in a mixture model, in which there is some natural overlap between age groups. For example, young fish will have some longer fish than those in the adult group. Each of these mixtures has some expectation and standard deviation.
+To identify the age groups of the remaining fish, we assume each fish is drawn from one of 3 distributions which represents their age: young, adult and old. Combining these distributions results in a mixture model, in which there is some natural overlap between age groups. For example, young fish will have some longer fish than those in the adult group. Each of these mixtures has some expectation and standard deviation.
 
-The empirical distribution function indicates three clear 'peaks', each corresponding to the 3 Gaussian mixtures for fish ages 'young', 'adult' and 'old. Figure ? also shows a Normal Quantile-Quantile (QQ) plot of fish lengths. Whilst this plot clearly shows deviation from the assumption from normality, the three subfigures identify three separate Gaussian Mixtures. Therefore, we make the reasonable assumption that fish lengths come from a tri-modal Gaussian Mixture. A Gaussian Mixture Model (GMM) "assumes all data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters".
+The empirical distribution function indicates three clear 'peaks', each corresponding to the 3 Gaussian mixtures for fish ages 'young', 'adult' and 'old. Figure ? also shows a Normal Quantile-Quantile (QQ) plot of fish lengths. Whilst this plot clearly shows deviation from the assumption from normality, the three sub-figures identify three separate Gaussian Mixtures. Therefore, we make the reasonable assumption that fish lengths come from a tri-modal Gaussian Mixture. A Gaussian Mixture Model (GMM) "assumes all data points are generated from a mixture of a finite number of Gaussian distributions with unknown parameters".
 
 ## b) Insurance Risk Pricing
 
@@ -138,7 +145,7 @@ For this example, rather than use real-world data, we simulate data for which we
 A variety of other use cases of the Expectation-Maximization exist in very different industries. Any problems that involve the clustering of observations when only some observations have known clusters can benefit from the use of this Algorithm. Such categorization for every single individual is either:
 
 a) Extremely time-consuming, or economically infeasible
-b) impossiblem, since data may only exist or be available for a subset of the population
+b) impossible, since data may only exist or be available for a subset of the population
 
 ## Advantages and disadvantages of the Expectation-Maximization Algorithm
 
@@ -146,13 +153,13 @@ b) impossiblem, since data may only exist or be available for a subset of the po
 - If there isn't much correlation between groups, there will be little independent variation in the cluster centroids and there will be a large number of misclassified observations
 - One could also use PCA to cluster observations and then identify the loss ratios within each cluster. 
 
-Insurance pricing is certainly an interesting case. Most variables are used to aggregate policyholders, and assume all policyholders in a group behave the same way. This might make sense when predicting claim severity (for example, we might expect those with more occupants or those with higher contents value to make larger claims, on average), however for claim frequency it can be dubious. In fact, the vast majority of information used in insurance pricing is basedon correlation rather than causation, and can result in overcharging and undercharging many individuals within a given group. Behavioural data is thus particularly important in the prediction of claim frequency and allows for greater explanatory power. For example, a policyholder with a google search history of how to to become a benefits cheat is far more likely to make a Contents Home Insurance claim.
+Insurance pricing is certainly an interesting case. Most variables are used to aggregate policyholders, and assume all policyholders in a group behave the same way. This might make sense when predicting claim severity (for example, we might expect those with more occupants or those with higher contents value to make larger claims, on average), however for claim frequency it can be dubious. In fact, the vast majority of information used in insurance pricing is based on correlation rather than causation, and can result in overcharging and undercharging many individuals within a given group. Behavioural data is thus particularly important in the prediction of claim frequency and allows for greater explanatory power. For example, a policyholder with a Google search history of how to to become a benefits cheat is far more likely to make a Contents Home Insurance claim.
 
 # Conclusion
 
 In this report we have discussed and implemented the Expectation-Maximization Algorithm to solve problems where only a sample of the population has been categorized, and we would like to use the characteristics of those individuals (correlations with the cluster) to inform the clusters of the remaining observations. 
 
-We believe this method is something that is seriously under-utilised. In particular it can result in large business value, by making use of data that is only available for a subset of the population. We have seen the case of insurance, where the use of such an algorithm can be hugely beneficial for risk pricing, in that it can help to identify behavioural characteristics of the population that a standard Generalized or Additive Model would fail to consider. It also enables one to engineer new feature which have a clear interpretation, a particularly important concept in insurance, where rate changes to such a variable by pricing analysts must have a logical structure.
+We believe this method is something that is seriously under-utilized. In particular it can result in large business value, by making use of data that is only available for a subset of the population. We have seen the case of insurance, where the use of such an algorithm can be hugely beneficial for risk pricing, in that it can help to identify behavioural characteristics of the population that a standard Generalized or Additive Model would fail to consider. It also enables one to engineer new feature which have a clear interpretation, a particularly important concept in insurance, where rate changes to such a variable by pricing analysts must have a logical structure.
 
 The algorithm is particularly useful in identifying unobserved variables and hidden processes.
 
