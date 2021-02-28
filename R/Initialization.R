@@ -6,7 +6,7 @@
 random_initialization <- function(X, target, K, clusters, p){
   # Inputs:
     # x: dataframe containing features
-    # y: character string identify the column
+    # y: character string identifying the column
     # K: no. clusters
     # clusters: cluster values to impute
     # p: vector of probability weights for each cluster
@@ -46,6 +46,12 @@ KMeans_initialization <- function(X, target, clusters){
 
 Multinomial_initialization <- function(X, target, clusters){
   
+  # Check if the relevant library is loaded- install packages if required
+  if (!require(nnet)) {
+    print("Installing nnet for Multinomial Initialization")
+    install.packages(nnet, dependencies = TRUE, verbose = FALSE)
+    library(nnet)
+  }
   # Fit multinomial model for known data
   
   # Use fitted model to predict clusters for unknown observations
@@ -83,6 +89,7 @@ initialization_fun <- function(method = "K-Means", target, X){
   }else{
     print("Incorrect initialization method specified, program will resort to
           default (K-Means)")
+    target <- KMeans_initialization(X, target, clusters)
   }
   return(target)
 }
