@@ -1,5 +1,9 @@
 # Initialization Step
 
+target <- c(1, 2, NA, 3, NA, 2, 1, NA, 3, NA)
+x1 <- c(1, 2, 3, 4, 5, 6, 5, 4, 3, 2)
+x2 <- c(rnorm(10))
+X <- data.frame(x1, x2)
 
 # Random Assignment -------------------------------------------------------
 
@@ -37,7 +41,7 @@ KMeans_initialization <- function(X, target, clusters){
       centroids[i] <- colMeans(X[which(target == i), ])
     }
   }
-  # Apply K-Means using calculated centroids and return a vecotr of cluster labels
+  # Apply K-Means using calculated centroids and return a vector of cluster labels
   target <- kmeans(X, centers = centroids)[1]
   return(target)
 }
@@ -53,7 +57,9 @@ Multinomial_initialization <- function(X, target, clusters){
     library(nnet)
   }
   # Fit multinomial model for known data
-  
+  dfTrn <- X[which(!is.na(target)), ]
+  yTrn <- target[which(!is.na(target))]
+  multinom_glm <- multinom(clusters ~ noquote(paste(names(X), collapse = "+")))
   # Use fitted model to predict clusters for unknown observations
   
 }
@@ -68,7 +74,7 @@ initialization_fun <- function(method = "K-Means", target, X){
   if (any(is.na(target))) {
     clusters <- na.omit(unique(target))
     K <- length(unique(target)) - 1
-    paste("Idenfitied", K, "clusters:", paste(clusters, collapse = ","), 
+    paste("Identified", K, "clusters:", paste(clusters, collapse = ","), 
           ". Please ensure this is correct- observations with missing cluster", 
           "should be identified as NA")
   }
@@ -91,5 +97,30 @@ initialization_fun <- function(method = "K-Means", target, X){
           default (K-Means)")
     target <- KMeans_initialization(X, target, clusters)
   }
-  return(target)
+  
+  # Create list to store all estimates - first element is a vector of probabilities
+  # for each group k, second element is a dataframe of mean vectors for each k, 
+  # final k elements are the variance-covariance matrices for each k.  
+  estimates <- vector(mode = "list", length = K + 2)
+  
+  # Calculate probability any fish is in each group k
+  for (i in clusters) {
+    estimates[[1]][i] <- mean(target == i)
+  }
+  # Calculate vector of means and covariance matrix for all observations in each of
+  # the k groups
+  estimates[[2]] <- data.frame(matrix(NA, nrow = K, ncol = dim(X)[2]))
+  for (i in 1:K) {
+    estimates[[2]][i, ] <- colMeans(X[target == i,])
+  }
+  # Covariance matrix - list where the k^th element is the covariance matrix 
+  # for group k. First initialize Sigma as an empty list with K elements
+  no_features = dim(X)[2]
+  for (i in 1:K) {
+    estimates[[(i + 2)]] <- matrix(NA, nrow = no_features, ncol = no_features)
+  }
+  for (i in 1:K) {
+    estimates[[(i + 2)]] <- var(X[target == i,])
+  }
+  return(estimates)
 }
