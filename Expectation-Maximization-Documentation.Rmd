@@ -17,11 +17,16 @@ The Expectation-Maximization is a semi-supervised cluster method used to categor
 
 For example, we can consider a case in the insurance industry
 
+A common modelling problem is how to estimate a joint probability distribution for a dataset. The method of Maximum Likelihhod selects the parameters that maximize the probability of seeing the data. A disadvantage of Maximum Likelihood is that it assumes that all variables that are relevant to the problem of density estimation and clustering are present. However, there may be some datasets where only the relevant variables are observed and others are not, and although they influence other random variables in the dataset, they remain hidden. These are known as _latent_ variables. "Many real-world problems have hidden variables (sometimes called latent variables), which are not observable in the data that are available for learning" (Russell, 2015). 
+The Expectation-Maximization Algorithm is "a general technique for findings maximum likelihood estimators in Latent Variable models". It is linked to both Hidden Markov Models. Suppose we have a sequence of choices made that are independent. The processes used to generate each sequence of choices represent a latent variable, e.g. process $k \in K$. In the EM-Algorithm, the Expectation Step estimates probability that each sequence belongs to each of the k process generating steps. The Maximization Step then optimizes the parameters of the distribtuion using maximum likelihood. 
+
 ## Latent Variables and Processes
 
 The Expectation-Maximization Algorithm is particularly useful for identifying and modelling latent variables. 
 
 ## Mixture Models
+
+The most common use of Expectation-Maximization Algorithms in the literature is for the estimation of density functions and the use of such density functions to cluster observations. 
 
 A _Gaussian Mixture Model_ (GMM) is a probabilistic model that assumes that the instances were generated from a mixture of several Gaussian distributions whose parameters are unknown. All the instances from a single Gaussian distribution form a cluster that typically looks like an ellipsoid. Each cluster can have a different ellipsoidal shape, size, density and orientationm (since the mean and standard deviation parameters for each mixture are themselves vectors). 
 
@@ -33,9 +38,16 @@ $$f(x) = \sum_{k = 1}^K \lambda_k \phi(x|\mu_k, \sigma_k^2)$$
 
 where $\phi(.| \mu_k, \sigma_k^2)$ is a normal probability density function with mean $\mu_k$ and variance $\sigma_k^2$. Not that the above formulation could be applied to any parametrized distribution. The aim is thus to identify the parameters $\lambda_k$, $\mu_k$ and $\sigma_k^2$ for every group, k. These estimates are then used to categorize the remaining observations with no prior cluster assignment. Note that we must specify the number of groups a priori. 
 
-Bayesian Gaussian Mixture Models
+The d-dimensional Multivariate Normal distribution is given as follows:
+
+$$f(\textbf{x}; \boldsymbol{\mu}, \boldsymbol{\sigma}) = \frac{1}{(2 \pi)^{\frac{d}{2}}|\Sigma|^{\frac{1}{2}}} exp(- \frac{1}{2}(\mathbf{x} - \boldsymbol{\mu})^T \Sigma^{-1}(\mathbf{x} - \boldsymbol{\mu}))$$
+
+In order for a vector to be Multivariate Normally distributed, the following must apply:
 
 
+To check whether a random vector is Multivariate Normally distributed, we can consider the Mahalanobis Distance. One can also transform individual variables to ensure they are approximately multivariate normally distibuted. 
+
+Whilst using a unsupervised Clustering algorithm may also be useful, it is worthwhile using the property of Normality for the data in order to identify such clusters and find a distribution for each cluster.
 
 # Expectation-Maximization Algorithm
 
@@ -89,7 +101,7 @@ $$\hat{\mu}_k = \frac{\sum_{i = 1}^N P(x_i \in k | x_i)x_i}{\sum_{i = 1}^{N}P(x_
 
 Note that this is a weighted mean, with the weights corresponding to the probability of an observation belonging to each class for each observation. The new estimate of $\sigma_k$ is based on $\hat{\mu}_k$:
 
-$$\hat{\sigma}_k = \sqrt{\frac{\sum_{i = 1}^N P(x_i \in k | x_i)(x_i - \hat{\mu}_k)^2}{\sum_{i = 1}^N P(x_i \in k |x_i)}$$
+$$\hat{\sigma}_k = \sqrt{\frac{\sum_{i = 1}^N P(x_i \in k | x_i)(x_i - \hat{\mu}_k)^2}{\sum_{i = 1}^N P(x_i \in k |x_i)}}$$
 
 Finally, 
 
@@ -99,7 +111,7 @@ $$\hat{\lambda_k} = \frac{1}{N}\sum_{i = 1}^N P(x_i \in k | x_i)$$
 
 There are a number of ways to check whether we have converged to the optimal grouping and parameter estimates. One such method is to compute the _log-likelihood_ at each iteration and determine if it has changed by a large enough amount to imply the algorithm has not converged. Once we have converged, the log-likelihood will have only changed by a small amount.
 
-The likelihood of our data given these new values of $\hat{\lambda}}$, $\hat{\mu}$ and $\hat{\sigma}$ is:
+The likelihood of our data given these new values of $\hat{\lambda}$, $\hat{\mu}$ and $\hat{\sigma}$ is:
 
 $$\ell(\mu, \lambda, \sigma | \textbf{X}) = \prod_{i = 1}^N \sum_{k = 1}^K \lambda_k \phi(x_i|\mu_k, \sigma_k^2)$$
 
@@ -110,6 +122,23 @@ Convergence is reached when:
 $$ln(\ell^{i + 1}) - ln(\ell^i) < \epsilon$$
 
 where $ln(\ell^i)$ is the log-likelihood from the $i^{th}$ iteration from the EM-Algorithm and $\epsilon$ is a desired tolerance. 
+
+# Example
+
+Consider the following mathematical example to clarify the EM-Algorithm. Suppose we have data on the width and length of 4 fish that belong to 3 age groups, where 1 represents "young" fish, 2 "adult" fish and 3 "old" fish:
+
+| fishID | Width | Length | Age Group |
+|--------|-------|--------|-----------|
+| 1      |  5 | 20 | 1 |
+| 2 | 7 | 30 | 3 |
+| 3|4|10|1|
+|4|5|17|2|
+
+We assume that each age group has lengths and widths that belong to a Multivariate Gaussian Mixture Model. The length and width of several species of fish are know to increase with age. There will of course be some overlap in the distributions, for example for unusually large 'young' fish and unusually small 'adult' fish. The goal is to classify the age group of the 2 unassigned fish using the attributes of the 4 fish with known age group. Assume the data are multivariate normally distributed.
+
+## 1) Initialization
+
+Firstly the parameters for each 2-dimensional Gaussian distribution are initialized.
 
 # R Code
 
@@ -146,6 +175,16 @@ In this example, the EM-Algorithm is extended to multiple dimensions. In this ca
 
 For this example, rather than use real-world data, we simulate data for which we know the true category for all observations. We then sample 10% of the observations, which we consider to be the known categories and for the remaining 90% of observations, we add some random variation (might not be necessary) and assess how well the algorithm performs in recovering the categories for each group.
 
+Assume that 
+
+### Binomial /Multinomial Distribution
+
+ Assume that we observe a time series of individual actions. At each time point an individual can do one of $k \in K$ things. We assume that at each point in time their choice is independent of their choice in all other time perios (i.e. we have independent trials hence there is no point looking at some sort of time series analysis). We would like to use the choices made by individuals to group them within a cluster. We know the clusters of the 1st 100 people, however for the remaining 900 people we do not know which cluster they will belong to. We do not have any other information about them other than the choices they make. 
+ 
+The point is that this method can be extended to almost any distribution with a tractable likelihood function. 
+
+First, one must check whether the distribution for each cluster is Multivariate Normal and we can do this using the Mahalanobis Distance.
+
 ## c) Other Use Cases
 
 A variety of other use cases of the Expectation-Maximization exist in very different industries. Any problems that involve the clustering of observations when only some observations have known clusters can benefit from the use of this Algorithm. Such categorization for every single individual is either:
@@ -160,6 +199,10 @@ b) impossible, since data may only exist or be available for a subset of the pop
 - One could also use PCA to cluster observations and then identify the loss ratios within each cluster. 
 
 Insurance pricing is certainly an interesting case. Most variables are used to aggregate policyholders, and assume all policyholders in a group behave the same way. This might make sense when predicting claim severity (for example, we might expect those with more occupants or those with higher contents value to make larger claims, on average), however for claim frequency it can be dubious. In fact, the vast majority of information used in insurance pricing is based on correlation rather than causation, and can result in overcharging and undercharging many individuals within a given group. Behavioural data is thus particularly important in the prediction of claim frequency and allows for greater explanatory power. For example, a policyholder with a Google search history of how to to become a benefits cheat is far more likely to make a Contents Home Insurance claim.
+
+# R and Python Packages
+
+There also exist R and Python packages that carry out the discussed algorithm. The scikic-learn GaussianMixture.
 
 # Conclusion
 
@@ -178,6 +221,8 @@ Chuong Do, Serafim Batzoglu (2008). 'What is the Expectation Maximization Algori
 Aurelien Geron (2019). 'Hands-On Machine Learning with Sikit-Learn, Keras & Tensorflow'. O'Reilly.
 
 Berlingerio, M., Bonchi, F., Gartner, T., Hurley, N., Ifrom, G. (2018). ‘Machine Learning and Knowledge Discovery in Databases’, European Conference, Dublin, Ireland, September 10-14, Proceedings, Part 2. pp379-381.
+
+
 
 # Appendix
 
