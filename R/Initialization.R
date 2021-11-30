@@ -5,6 +5,15 @@ x1 <- c(1, 2, 3, 4, 5, 6, 5, 4, 3, 2)
 x2 <- c(rnorm(10))
 X <- data.frame(x1, x2)
 
+# Load packages -----------------------------------------------------------
+
+# Checkmate for asserting conditions to improve code robustness
+checkmate::assert()
+
+# Another question we should ask is whether we should be pre-specifying the 
+# package name before the function from that package
+# e.g. checkmate::assert()
+
 # Random Assignment -------------------------------------------------------
 
 random_initialization <- function(X, target, K, clusters, p){
